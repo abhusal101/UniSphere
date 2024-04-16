@@ -33,9 +33,14 @@ export const CoverImageModal = () => {
             setIsSubmitting(true);
             setFile(file);
 
+
+            // used https://edgestore.dev/docs/quick-start as a reference
             const res = await edgestore.publicFiles.upload({
-                file
-            })
+                file,
+                options: {
+                    replaceTargetUrl: coverImage.url
+                }
+            });
 
             await update ({
                 id: params.documentId as Id<"documents">,
