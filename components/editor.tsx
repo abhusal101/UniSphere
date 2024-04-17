@@ -63,9 +63,11 @@ import { useEdgeStore } from "@/lib/edgestore";
 interface EditorProps {
     onChange: (value: string) => void;
     initialContent?: string;
+    editable?: boolean;
 }
 
 const Editor = ({
+    editable,
     onChange,
     initialContent,
 }: EditorProps) => {
@@ -88,7 +90,7 @@ const Editor = ({
     // Initialise BlockNote editor
     const editor: BlockNoteEditor = useCreateBlockNote({
         initialContent: initialContent ? JSON.parse(initialContent) as PartialBlock[] : undefined,
-        uploadFile: handleUpload
+        uploadFile: handleUpload,
     });
     // Subscribe to editor content changes
     useEffect(() => {
