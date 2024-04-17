@@ -57,6 +57,8 @@ import { useTheme } from "next-themes";
 
 import { useState, useEffect } from "react";
 
+import { useEdgeStore } from "@/lib/edgestore";
+
 
 interface EditorProps {
     onChange: (value: string) => void;
@@ -70,11 +72,23 @@ export const Editor = ({
 
     const { resolvedTheme } = useTheme();
 
+    const { edgestore } = useEdgeStore();
+
+    //function that handles uploading images in the editor
+    const handleUpload = async (file: File) => {
+        const response = await edgestore.publicFiles.upload({
+            file
+        });
+
+        return response.url;
+    }
+
     const [editorContent, setEditorContent] = useState<string>("");
 
     // Initialise BlockNote editor
     const editor: BlockNoteEditor = useCreateBlockNote({
-        initialContent: initialContent ? JSON.parse(initialContent) as PartialBlock[] : undefined
+        initialContent: initialContent ? JSON.parse(initialContent) as PartialBlock[] : undefined,
+        uploadFile: handleUpload
     });
     // Subscribe to editor content changes
     useEffect(() => {
